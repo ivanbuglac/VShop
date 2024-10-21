@@ -1,0 +1,272 @@
+:root {
+	--black: #2b2a29;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	width: 100%;
+	height: 100%;
+}
+
+.header {
+	width: 1240px;
+	margin: 0 auto;
+	align-items: center;
+	max-width: 1240px;
+	height: 80px;
+	background: var(--black);
+}
+
+.container-header {
+	position: relative;
+	top: 15.5px;
+	left: 15px;
+}
+
+.wrapper {
+	display: grid;
+	grid-template-columns: 1fr 375px;
+	max-width: 1240px;
+	margin: 0 auto;
+}
+
+.catalog {
+	display: grid;
+	grid-template-columns: repeat(3, 280px);
+}
+
+.card {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	width: 270px;
+	height: 360px;
+	margin-top: 10px;
+	box-shadow: 1px 1px 5px 0px rgba(0, 0, 0, 0.29);
+	background: rgb(255, 255, 255);
+	padding: 10px;
+	position: relative;
+}
+
+.card .card__image img {
+	width: 250px;
+	height: 130px;
+
+	background-image: url('./assets/1.png.png');
+	background-repeat: no-repeat;
+}
+
+.card .card__title {
+	color: rgb(29, 31, 34);
+	font-size: 20px;
+	font-weight: 700;
+	line-height: 23px;
+	padding: 5px;
+}
+
+.card .card__description {
+	color: rgb(29, 31, 34);
+	font-family: Times New Roman;
+	font-size: 16px;
+	font-weight: 400;
+	line-height: 18px;
+	padding: 5px;
+	flex-grow: 1;
+}
+
+.card .card__buy {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: -10px;
+}
+
+.card .card__buy .price {
+	color: rgb(29, 31, 34);
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+	font-size: 24px;
+	font-weight: 700;
+	line-height: 32px;
+	padding-left: 10px;
+}
+
+.card .card__buy .price-btn {
+	cursor: pointer;
+	width: 40px;
+	height: 40px;
+	margin-right: 10px;
+}
+
+.card .card__buy .price-btn:hover {
+	opacity: 0.85;
+}
+
+.btn__show_more {
+	cursor: pointer;
+	position: relative;
+	top: 10px;
+	left: 310px;
+	width: 200px;
+	height: 44px;
+	padding: 10px 50px 10px 50px;
+	box-sizing: border-box;
+	border: 2px solid rgb(29, 31, 34);
+	border-radius: 44.8px;
+
+	box-shadow: 0px 2px 4.8px 0px rgba(0, 0, 0, 0.25);
+	background: rgb(255, 255, 255);
+}
+
+.basket {
+	margin-top: 10px;
+	width: 370px;
+	max-height: 695px;
+	background-color: #fff;
+
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.29);
+
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+.basket::-webkit-scrollbar {
+	width: 5px;
+}
+
+.basket::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 10px;
+}
+
+.basket::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+.basket h2 {
+	font-size: 24px;
+	margin-bottom: 15px;
+	width: 100%;
+	height: 55px;
+	background: var(--black);
+	color: #fff;
+	padding-top: 16px;
+	padding-left: 15px;
+	box-sizing: border-box;
+}
+
+.basket p {
+	font-size: 18px;
+}
+.basket__mini-card {
+	width: 370px;
+	max-height: 495px;
+	background-color: #fff;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.mini-card {
+	height: 70px;
+	box-sizing: border-box;
+	padding: 10px;
+	display: flex;
+	align-items: flex-start;
+	border-bottom: 1px solid;
+	position: relative;
+}
+
+.mini-card .mini-card__picture img {
+	width: 48px;
+	height: 48px;
+}
+.product-info {
+	max-width: 210px;
+	display: flex;
+	flex-direction: column;
+}
+
+.mini-card .mini-card__title {
+	color: rgb(29, 31, 34);
+	font-family: Times New Roman;
+	font-size: 19.2px;
+	font-weight: 400;
+	line-height: 16px;
+	margin-top: 3.5px;
+}
+
+.mini-card .mini-card__price {
+	color: rgb(29, 31, 34);
+	font-family: Gilroy;
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 19px;
+	margin-top: 6px;
+}
+
+.mini-card .delete img {
+	position: absolute;
+	right: 20px;
+	top: 30px;
+}
+
+.total {
+	margin-top: 10px;
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+}
+
+.total .total__price {
+	color: rgb(8, 1, 17);
+	font-family: Gotham Pro;
+	font-size: 32px;
+	font-weight: 700;
+	line-height: 31px;
+}
+
+.total .total_btn button {
+	cursor: pointer;
+	padding: 16px 50px 16px 50px;
+	margin-top: 16px;
+	border: 2px solid rgb(43, 42, 41);
+	border-radius: 35px;
+	color: #fff;
+	box-shadow: 0px 2px 4.5px 0px rgba(0, 0, 0, 0.25);
+	background: var(--black);
+	font-size: 24px;
+	font-weight: 600;
+	margin-bottom: 20px;
+}
+.total .total_btn button:hover {
+	opacity: 0.85;
+}
+
+.footer {
+	background: var(--black);
+	color: rgb(255, 255, 255);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 40px;
+	width: 1240px;
+	max-width: 1240px;
+	position: relative;
+	bottom: 0;
+	top: 20px;
+	text-align: center;
+	margin: 0 auto;
+}
+
+.footer p {
+	margin: 0;
+}
+
+.footer a {
+	color: rgb(255, 255, 255);
+	text-decoration-thickness: 1px;
+	text-underline-offset: 2px;
+}

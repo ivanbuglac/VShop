@@ -1,0 +1,19 @@
+<svg width="40.000000" height="40.000000" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<desc>
+			Created with Pixso.
+	</desc>
+	<defs>
+		<clipPath id="clip2_100">
+			<rect id="icon-buy.dea28a594ec765e678eb.svg" rx="-0.476190" width="19.047619" height="17.142857" transform="translate(10.476191 11.428583)" fill="white" fill-opacity="0"/>
+		</clipPath>
+		<clipPath id="clip2_101">
+			<rect id="icon-buy.dea28a594ec765e678eb.svg fill" rx="-0.500000" width="39.000000" height="39.000000" transform="translate(0.500000 0.500000)" fill="white" fill-opacity="0"/>
+		</clipPath>
+	</defs>
+	<rect id="Button" rx="19.500000" width="39.000000" height="39.000000" transform="translate(0.500000 0.500000)" fill="#1D1F22" fill-opacity="1.000000"/>
+	<g clip-path="url(#clip2_101)">
+		<g clip-path="url(#clip2_100)">
+			<path id="Vector" d="M29.83 17.63L26.6 17.63L23.2 11.97C23.03 11.69 22.66 11.6 22.38 11.77C22.1 11.94 22.01 12.3 22.18 12.58L25.21 17.63L15.41 17.63L18.44 12.58C18.61 12.3 18.51 11.94 18.23 11.77C17.95 11.6 17.58 11.69 17.42 11.97L14.02 17.63L10.78 17.63L10.78 18.82L12.07 18.82L13.59 26.89C13.75 27.74 14.48 28.35 15.34 28.35L25.27 28.35C26.13 28.35 26.87 27.74 27.03 26.89L28.54 18.82L29.83 18.82L29.83 17.63ZM25.86 26.67C25.8 26.95 25.56 27.16 25.27 27.16L15.34 27.16C15.06 27.16 14.81 26.95 14.76 26.67L13.29 18.82L27.33 18.82L25.86 26.67Z" fill="#FFFFFF" fill-opacity="1.000000" fill-rule="evenodd"/>
+		</g>
+	</g>
+</svg>
