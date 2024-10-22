@@ -129,21 +129,6 @@ body {
 	background-color: #fff;
 
 	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.29);
-
-	overflow-y: auto;
-	overflow-x: hidden;
-}
-.basket::-webkit-scrollbar {
-	width: 5px;
-}
-
-.basket::-webkit-scrollbar-thumb {
-	background: #888;
-	border-radius: 10px;
-}
-
-.basket::-webkit-scrollbar-thumb:hover {
-	background: #555;
 }
 
 .basket h2 {
@@ -167,6 +152,19 @@ body {
 	background-color: #fff;
 	overflow-y: auto;
 	overflow-x: hidden;
+}
+
+.basket__mini-card::-webkit-scrollbar {
+	width: 5px;
+}
+
+.basket__mini-card::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 10px;
+}
+
+.basket__mini-card::-webkit-scrollbar-thumb:hover {
+	background: #555;
 }
 
 .mini-card {
@@ -196,6 +194,7 @@ body {
 	font-weight: 400;
 	line-height: 16px;
 	margin-top: 3.5px;
+	width: 250px;
 }
 
 .mini-card .mini-card__price {
