@@ -1,44 +1,45 @@
-import { loadProducts } from './api.js'
+// main.js (или любой другой основной файл)
+
 import { createProductCard } from './card.js'
+import { loadProducts } from './api.js' // Импортируем функцию для загрузки товаров
 
 const catalogRoot = document.getElementById('catalog-root')
-let products = []
-let productsToShow = 6
-let currentOffset = 0
+let currentOffset = 0 // Смещение для загрузки следующей порции товаров
+const productsToShow = 6 // Сколько товаров показывать за один раз
+let totalProducts = 0 // Общее количество товаров на сервере
 
-function renderCatalogPart() {
-	const productsSubset = products.slice(
+// Функция для отрисовки части каталога
+async function renderCatalogPart() {
+	// Загружаем товары с API
+	const { products: productsSubset, total } = await loadProducts(
 		currentOffset,
-		currentOffset + productsToShow
+		productsToShow
 	)
+	totalProducts = total // Обновляем общее количество товаров
 
+	// Рендерим каждую карточку
 	productsSubset.forEach(product => {
-		let productCard = document.querySelector(`.card[data-id="${product.id}"]`)
-
-		if (!productCard) {
-			productCard = createProductCard(product, handleAddToCart)
-			catalogRoot.appendChild(productCard)
-		} else {
-			const priceElement = productCard.querySelector('.price')
-			if (priceElement) {
-				priceElement.textContent = `$${product.price}`
-			}
-		}
+		const productCard = createProductCard(product, handleAddToCart)
+		catalogRoot.appendChild(productCard)
 	})
 
-	if (currentOffset + productsToShow < products.length) {
-		let loadMoreBtn = document.querySelector('.btn__show_more')
+	// Показываем или скрываем кнопку "Show More" в зависимости от загруженных товаров
+	const loadMoreBtn = document.querySelector('.btn__show_more')
 
+	if (currentOffset + productsToShow < totalProducts) {
 		if (!loadMoreBtn) {
-			loadMoreBtn = document.createElement('button')
-			loadMoreBtn.textContent = 'Show More'
-			loadMoreBtn.className = 'btn__show_more'
-			loadMoreBtn.addEventListener('click', loadMoreProducts)
-			catalogRoot.appendChild(loadMoreBtn)
+			const newLoadMoreBtn = document.createElement('button')
+			newLoadMoreBtn.textContent = 'Show More'
+			newLoadMoreBtn.className = 'btn__show_more'
+			newLoadMoreBtn.addEventListener('click', loadMoreProducts)
+			catalogRoot.appendChild(newLoadMoreBtn)
 		}
+	} else if (loadMoreBtn) {
+		loadMoreBtn.remove()
 	}
 }
 
+// Обработчик добавления товара в корзину
 function handleAddToCart(product) {
 	const addToCartEvent = new CustomEvent('addToCart', {
 		detail: { product },
@@ -46,17 +47,15 @@ function handleAddToCart(product) {
 	window.dispatchEvent(addToCartEvent)
 }
 
+// Функция для подгрузки товаров при нажатии на кнопку "Show More"
 function loadMoreProducts() {
-	currentOffset += productsToShow
-	const loadMoreBtn = document.querySelector('.btn__show_more')
-	if (loadMoreBtn) loadMoreBtn.remove()
-
-	renderCatalogPart()
+	currentOffset += productsToShow // Увеличиваем смещение
+	renderCatalogPart() // Подгружаем следующую партию товаров
 }
 
+// Инициализация каталога
 async function initializeCatalog() {
-	products = await loadProducts()
-	renderCatalogPart()
+	await renderCatalogPart() // Загружаем первую порцию товаров
 }
 
 initializeCatalog()

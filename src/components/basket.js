@@ -22,7 +22,6 @@ function renderCart() {
 		return
 	}
 
-	// Создаем контейнер для мини-карточек
 	const miniCardWrapper = document.createElement('div')
 	miniCardWrapper.className = 'basket__mini-card'
 
@@ -85,5 +84,4 @@ window.addEventListener('addToCart', event => {
 	addToCart(event.detail.product)
 })
 
-// Рендерим корзину при загрузке страницы
 renderCart()
