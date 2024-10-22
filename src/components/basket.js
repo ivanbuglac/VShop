@@ -63,7 +63,7 @@ function renderCart() {
     `
 	cartRoot.appendChild(totalDiv)
 
-	const checkoutBtn = document.getElementById('checkout-btn')
+	const checkoutBtn = totalDiv.querySelector('#checkout-btn')
 	checkoutBtn.addEventListener('click', clearCart)
 }
 
@@ -79,7 +79,6 @@ function removeFromCart(id) {
 	renderCart()
 }
 
-// Слушаем кастомное событие для добавления товара в корзину
 window.addEventListener('addToCart', event => {
 	addToCart(event.detail.product)
 })
