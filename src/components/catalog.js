@@ -2,57 +2,45 @@ import { loadProducts } from './api.js'
 import { createProductCard } from './card.js'
 
 const catalogRoot = document.getElementById('catalog-root')
+let products = []
+let filteredProducts = [] // Для хранения отфильтрованных товаров
+let productsToShow = 6
 let currentOffset = 0
-const productsToShow = 6
-let totalProducts = 0
-let loadMoreBtn = null // Переменная для кнопки "Show More"
 
-async function renderCatalogPart() {
-	const { products: productsSubset, total } = await loadProducts(
+function renderCatalogPart(productList) {
+	const productsSubset = productList.slice(
 		currentOffset,
-		productsToShow
+		currentOffset + productsToShow
 	)
 
-	if (totalProducts === 0) {
-		totalProducts = total
-	}
-
-	console.log('Current Offset:', currentOffset)
-	console.log('Products to Show:', productsToShow)
-	console.log('Total Products:', totalProducts)
-
 	productsSubset.forEach(product => {
-		const productCard = createProductCard(product, handleAddToCart)
-		catalogRoot.appendChild(productCard)
+		let productCard = document.querySelector(`.card[data-id="${product.id}"]`)
+
+		if (!productCard) {
+			productCard = createProductCard(product, handleAddToCart)
+			catalogRoot.appendChild(productCard)
+		} else {
+			const priceElement = productCard.querySelector('.price')
+			if (priceElement) {
+				priceElement.textContent = `$${product.price}`
+			}
+		}
 	})
 
-	checkShowMoreButton()
-}
+	if (currentOffset + productsToShow < productList.length) {
+		let loadMoreBtn = document.querySelector('.btn__show_more')
 
-function checkShowMoreButton() {
-	if (currentOffset + productsToShow < totalProducts) {
 		if (!loadMoreBtn) {
 			loadMoreBtn = document.createElement('button')
 			loadMoreBtn.textContent = 'Show More'
 			loadMoreBtn.className = 'btn__show_more'
-			loadMoreBtn.addEventListener('click', loadMoreProducts)
+			loadMoreBtn.addEventListener('click', () => loadMoreProducts(productList))
 			catalogRoot.appendChild(loadMoreBtn)
 		}
-	} else if (loadMoreBtn) {
-		loadMoreBtn.remove()
-		loadMoreBtn = null
+	} else {
+		const loadMoreBtn = document.querySelector('.btn__show_more')
+		if (loadMoreBtn) loadMoreBtn.remove() // Удаляем кнопку, если товаров больше нет
 	}
-}
-
-function loadMoreProducts() {
-	currentOffset += productsToShow
-
-	if (loadMoreBtn) {
-		loadMoreBtn.remove()
-		loadMoreBtn = null
-	}
-
-	renderCatalogPart()
 }
 
 function handleAddToCart(product) {
@@ -62,8 +50,27 @@ function handleAddToCart(product) {
 	window.dispatchEvent(addToCartEvent)
 }
 
-async function initializeCatalog() {
-	await renderCatalogPart()
+function loadMoreProducts(productList) {
+	currentOffset += productsToShow
+	const loadMoreBtn = document.querySelector('.btn__show_more')
+	if (loadMoreBtn) loadMoreBtn.remove()
+
+	renderCatalogPart(productList)
 }
 
+async function initializeCatalog() {
+	products = await loadProducts()
+	filteredProducts = [...products] // Изначально отображаем все товары
+	renderCatalogPart(filteredProducts)
+}
+
+// Обрабатываем событие фильтрации товаров
+window.addEventListener('filteredProducts', event => {
+	filteredProducts = event.detail.filteredProducts
+	currentOffset = 0 // Сбрасываем смещение при фильтрации
+	catalogRoot.innerHTML = '' // Очищаем каталог перед фильтрацией
+	renderCatalogPart(filteredProducts)
+})
+
+// Инициализируем каталог при загрузке страницы
 initializeCatalog()

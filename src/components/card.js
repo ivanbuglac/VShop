@@ -1,4 +1,4 @@
-export const createProductCard = (product, onAddToCart) => {
+export function createProductCard(product, onAddToCart) {
 	const productCard = document.createElement('div')
 	productCard.className = 'card'
 	productCard.setAttribute('data-id', product.id)
@@ -17,11 +17,10 @@ export const createProductCard = (product, onAddToCart) => {
     </div>
   `
 
-	productCard.addEventListener('click', event => {
-		if (event.target && event.target.classList.contains('add-to-cart')) {
-			onAddToCart(product)
-		}
-	})
+	const addToCartButton = productCard.querySelector('.add-to-cart')
+	if (addToCartButton) {
+		addToCartButton.addEventListener('click', () => onAddToCart(product))
+	}
 
 	return productCard
 }

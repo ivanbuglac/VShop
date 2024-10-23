@@ -27,25 +27,54 @@ body {
 	top: 15.5px;
 	left: 15px;
 }
+/* Стили для кнопки "Фильтры" */
+.btn__toggle_filters {
+	background-color: #007bff;
+	color: white;
+	padding: 10px 20px;
+	border: none;
+	cursor: pointer;
+	font-size: 16px;
+	margin-bottom: 20px;
+	border-radius: 5px;
+	width: 100px;
+	height: 50px;
+}
+
+/* Стили для контейнера фильтров */
+.filter-container {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 20px;
+}
+
+/* Секция фильтров (теги или бренды) */
+.filter-section {
+	flex: 1;
+	margin-right: 20px;
+}
+
+/* Последняя секция (бренды) без отступа справа */
+.filter-section:last-child {
+	margin-right: 0;
+}
+
+/* Стили для каждого фильтра (чекбоксы) */
+.filter-item {
+	display: block;
+	margin-bottom: 10px;
+}
+
+.filter-group {
+	display: grid;
+	grid-template-columns: repeat(2, 200px);
+}
 
 .wrapper {
 	display: grid;
 	grid-template-columns: 1fr 375px;
 	max-width: 1240px;
 	margin: 0 auto;
-}
-.filters {
-	width: 830px;
-	height: auto;
-}
-.filters h2 {
-	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-	font-size: 24px;
-}
-
-.filters .filters__box {
-	display: grid;
-	grid-template-columns: repeat(5, 80px);
 }
 
 .catalog {
@@ -134,9 +163,6 @@ body {
 	box-shadow: 0px 2px 4.8px 0px rgba(0, 0, 0, 0.25);
 	background: rgb(255, 255, 255);
 }
-.hidden {
-	display: none;
-}
 
 .basket {
 	margin-top: 10px;
@@ -148,7 +174,6 @@ body {
 }
 
 .basket h2 {
-	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 	font-size: 24px;
 	margin-bottom: 15px;
 	width: 100%;
@@ -216,7 +241,7 @@ body {
 
 .mini-card .mini-card__price {
 	color: rgb(29, 31, 34);
-	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+	font-family: Gilroy;
 	font-size: 16px;
 	font-weight: 700;
 	line-height: 19px;
@@ -224,7 +249,6 @@ body {
 }
 
 .mini-card .delete img {
-	cursor: pointer;
 	position: absolute;
 	right: 20px;
 	top: 30px;

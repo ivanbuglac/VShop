@@ -22,6 +22,7 @@ function renderCart() {
 		return
 	}
 
+	// Создаем контейнер для мини-карточек
 	const miniCardWrapper = document.createElement('div')
 	miniCardWrapper.className = 'basket__mini-card'
 
@@ -63,7 +64,7 @@ function renderCart() {
     `
 	cartRoot.appendChild(totalDiv)
 
-	const checkoutBtn = totalDiv.querySelector('#checkout-btn')
+	const checkoutBtn = document.getElementById('checkout-btn')
 	checkoutBtn.addEventListener('click', clearCart)
 }
 
@@ -79,8 +80,10 @@ function removeFromCart(id) {
 	renderCart()
 }
 
+// Слушаем кастомное событие для добавления товара в корзину
 window.addEventListener('addToCart', event => {
 	addToCart(event.detail.product)
 })
 
+// Рендерим корзину при загрузке страницы
 renderCart()

@@ -1,15 +1,10 @@
-export async function loadProducts(offset = 0, limit = 6) {
+export async function loadProducts() {
 	try {
-		const response = await fetch(
-			`https://dummyjson.com/products?limit=${limit}&skip=${offset}`
-		)
+		const response = await fetch('https://dummyjson.com/products?limit=30')
 		const data = await response.json()
-		return {
-			products: data.products,
-			total: data.total, // Общее количество товаров на сервере
-		}
+		return data.products
 	} catch (error) {
 		console.error('Ошибка загрузки каталога:', error)
-		return { products: [], total: 0 }
+		return []
 	}
 }
