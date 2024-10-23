@@ -208,6 +208,7 @@ body {
 }
 
 .mini-card .delete img {
+	cursor: pointer;
 	position: absolute;
 	right: 20px;
 	top: 30px;
