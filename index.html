@@ -13,8 +13,17 @@
 				<div class="header-logo">
 					<img src="./name.svg" alt="Logo" />
 				</div>
+				<button id="filter-btn" class="btn__toggle_filters">
+					<img src="./mage_filter.svg" alt="" />Фильтры
+				</button>
 			</div>
 		</header>
+		<div id="filter-modal" class="modal">
+			<div class="modal-content">
+				<span id="close-modal" class="close">&times;</span>
+				<div id="filters-root" class="filters-container"></div>
+			</div>
+		</div>
 		<main class="wrapper">
 			<div id="filters-root" class="filters-container"></div>
 			<div id="catalog-root" class="catalog"></div>

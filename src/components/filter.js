@@ -7,6 +7,28 @@ let selectedFilters = {
 	brands: new Set(),
 }
 
+// Переменные для кнопки фильтров и модального окна
+const filterModal = document.getElementById('filter-modal')
+const filterBtn = document.getElementById('filter-btn')
+const closeModal = document.getElementById('close-modal')
+
+// Открытие модального окна при нажатии на кнопку "Фильтры"
+filterBtn.addEventListener('click', () => {
+	filterModal.style.display = 'block'
+})
+
+// Закрытие модального окна при нажатии на крестик
+closeModal.addEventListener('click', () => {
+	filterModal.style.display = 'none'
+})
+
+// Закрытие модального окна при клике вне его области
+window.addEventListener('click', event => {
+	if (event.target === filterModal) {
+		filterModal.style.display = 'none'
+	}
+})
+
 // Создаем UI компонент для группы фильтров (универсальный)
 function createFilterGroup(title, items, filterType) {
 	const filterGroup = document.createElement('div')
@@ -100,27 +122,5 @@ async function initializeFilters() {
 	filtersRoot.appendChild(brandsFilterGroup)
 }
 
-// Скрытие/показ фильтров
-let filtersVisible = false
-function toggleFiltersVisibility() {
-	filtersVisible = !filtersVisible
-	filtersRoot.style.display = filtersVisible ? 'block' : 'none'
-}
-
-// Создание кнопки "Фильтры"
-function createFilterButton() {
-	const filterToggleButton = document.createElement('button')
-	filterToggleButton.textContent = 'Фильтры'
-	filterToggleButton.className = 'btn__toggle_filters'
-	filterToggleButton.addEventListener('click', toggleFiltersVisibility)
-
-	// Добавляем кнопку перед каталогом
-	const wrapper = document.querySelector('.wrapper')
-	wrapper.insertBefore(
-		filterToggleButton,
-		document.getElementById('catalog-root')
-	)
-}
-createFilterButton()
-// Инициализируем фильтры и создаем кнопку при загрузке страницы
+// Инициализируем фильтры при загрузке страницы
 initializeFilters()

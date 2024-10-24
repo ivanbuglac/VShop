@@ -26,23 +26,14 @@ body {
 	position: relative;
 	top: 15.5px;
 	left: 15px;
+	display: flex;
 }
+
 /* Стили для кнопки "Фильтры" */
-.btn__toggle_filters {
-	background-color: #007bff;
-	color: white;
-	padding: 10px 20px;
-	border: none;
-	cursor: pointer;
-	font-size: 16px;
-	margin-bottom: 20px;
-	border-radius: 5px;
-	width: 100px;
-	height: 50px;
-}
 
 /* Стили для контейнера фильтров */
 .filter-container {
+	position: relative;
 	display: flex;
 	justify-content: space-between;
 	margin-bottom: 20px;
@@ -68,6 +59,76 @@ body {
 .filter-group {
 	display: grid;
 	grid-template-columns: repeat(2, 200px);
+}
+
+/* Модальное окно */
+.modal {
+	display: none; /* Скрыто по умолчанию */
+	position: fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный фон */
+}
+
+.modal-content {
+	background-color: #fff;
+	margin: 5% auto; /* Сделаем окно немного меньше по высоте */
+	padding: 20px;
+	width: 80%; /* Изменим ширину модального окна для большей вместительности */
+	height: 800px;
+	border-radius: 10px;
+	position: relative;
+	overflow-y: auto; /* Прокрутка для модального окна */
+}
+
+.close {
+	position: absolute;
+	top: 10px;
+	right: 15px;
+	font-size: 25px;
+	cursor: pointer;
+}
+
+/* Стили для отображения фильтров в строку */
+.filters-container {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	position: absolute;
+}
+
+.filter-group {
+	margin-right: 15px;
+}
+
+.filter-item {
+	display: flex;
+	align-items: center;
+}
+
+.filter-item label {
+	margin-left: 5px;
+}
+
+.btn__toggle_filters {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	cursor: pointer;
+	background-color: #ffffff;
+	color: var(--black);
+	border: none;
+	padding: 10px 20px;
+	border-radius: 5px;
+	font-size: 16px;
+	margin-left: 900px;
+}
+
+.btn__toggle_filters:hover {
+	opacity: 0.85;
 }
 
 .wrapper {
