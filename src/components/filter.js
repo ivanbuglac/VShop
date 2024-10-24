@@ -1,35 +1,31 @@
 import { loadProducts } from './api.js'
 
+const filterModal = document.getElementById('filter-modal')
+const filterBtn = document.getElementById('filter-btn')
+const closeModal = document.getElementById('close-modal')
+
 const filtersRoot = document.getElementById('filters-root')
+
 let allProducts = []
 let selectedFilters = {
 	tags: new Set(),
 	brands: new Set(),
 }
 
-// Переменные для кнопки фильтров и модального окна
-const filterModal = document.getElementById('filter-modal')
-const filterBtn = document.getElementById('filter-btn')
-const closeModal = document.getElementById('close-modal')
-
-// Открытие модального окна при нажатии на кнопку "Фильтры"
 filterBtn.addEventListener('click', () => {
 	filterModal.style.display = 'block'
 })
 
-// Закрытие модального окна при нажатии на крестик
 closeModal.addEventListener('click', () => {
 	filterModal.style.display = 'none'
 })
 
-// Закрытие модального окна при клике вне его области
 window.addEventListener('click', event => {
 	if (event.target === filterModal) {
 		filterModal.style.display = 'none'
 	}
 })
 
-// Создаем UI компонент для группы фильтров (универсальный)
 function createFilterGroup(title, items, filterType) {
 	const filterGroup = document.createElement('div')
 	filterGroup.className = 'filter-group'
@@ -42,19 +38,11 @@ function createFilterGroup(title, items, filterType) {
 		const filterItem = document.createElement('div')
 		filterItem.className = 'filter-item'
 
-		const checkbox = document.createElement('input')
-		checkbox.type = 'checkbox'
-		checkbox.id = `${filterType}-${item}`
-		checkbox.value = item
-		checkbox.addEventListener('change', () =>
-			handleFilterChange(filterType, item)
-		)
-
-		const label = document.createElement('label')
-		label.htmlFor = `${filterType}-${item}`
+		const label = document.createElement('span') //  span для метки
 		label.textContent = item
+		label.className = 'filter-label' // Добавляем класс для метки
+		label.addEventListener('click', () => handleFilterChange(filterType, item))
 
-		filterItem.appendChild(checkbox)
 		filterItem.appendChild(label)
 		filterGroup.appendChild(filterItem)
 	})
@@ -62,22 +50,41 @@ function createFilterGroup(title, items, filterType) {
 	return filterGroup
 }
 
-// Обрабатываем изменения в фильтрах
 function handleFilterChange(filterType, value) {
 	if (filterType === 'tags') {
-		selectedFilters.tags.has(value)
-			? selectedFilters.tags.delete(value)
-			: selectedFilters.tags.add(value)
+		if (selectedFilters.tags.has(value)) {
+			selectedFilters.tags.delete(value)
+		} else {
+			selectedFilters.tags.add(value)
+		}
 	} else if (filterType === 'brands') {
-		selectedFilters.brands.has(value)
-			? selectedFilters.brands.delete(value)
-			: selectedFilters.brands.add(value)
+		if (selectedFilters.brands.has(value)) {
+			selectedFilters.brands.delete(value)
+		} else {
+			selectedFilters.brands.add(value)
+		}
 	}
+
+	updateFilterLabels(filterType, value)
 
 	filterProducts()
 }
 
-// Функция для фильтрации товаров
+function updateFilterLabels(filterType, value) {
+	const labels = document.querySelectorAll(`.filter-label`)
+	labels.forEach(label => {
+		if (label.textContent === value) {
+			if (filterType === 'tags' && selectedFilters.tags.has(value)) {
+				label.classList.add('active')
+			} else if (filterType === 'brands' && selectedFilters.brands.has(value)) {
+				label.classList.add('active')
+			} else {
+				label.classList.remove('active')
+			}
+		}
+	})
+}
+
 function filterProducts() {
 	const filteredProducts = allProducts.filter(product => {
 		const matchesTags =
@@ -90,27 +97,26 @@ function filterProducts() {
 		return matchesTags && matchesBrand
 	})
 
-	// Событие для рендеринга отфильтрованных продуктов
 	const filterEvent = new CustomEvent('filteredProducts', {
 		detail: { filteredProducts },
 	})
 	window.dispatchEvent(filterEvent)
 }
 
-// Инициализация фильтров
 async function initializeFilters() {
-	allProducts = await loadProducts()
+	const { products } = await loadProducts(0, 194) // Загружаем все товары
 
-	// Извлекаем все уникальные теги и бренды
+	allProducts = products // Сохраняем все товары
+
 	const uniqueTags = new Set()
 	const uniqueBrands = new Set()
-	allProducts.forEach(product => {
+
+	products.forEach(product => {
 		product.tags.forEach(tag => uniqueTags.add(tag))
 		uniqueBrands.add(product.brand)
 	})
 
-	// Рендерим фильтры
-	filtersRoot.innerHTML = '' // Очищаем фильтры перед рендерингом
+	filtersRoot.innerHTML = ''
 	const tagsFilterGroup = createFilterGroup('Tags', [...uniqueTags], 'tags')
 	const brandsFilterGroup = createFilterGroup(
 		'Brands',
@@ -122,5 +128,4 @@ async function initializeFilters() {
 	filtersRoot.appendChild(brandsFilterGroup)
 }
 
-// Инициализируем фильтры при загрузке страницы
 initializeFilters()
