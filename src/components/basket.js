@@ -22,7 +22,6 @@ function renderCart() {
 		return
 	}
 
-	// Создаем контейнер для мини-карточек
 	const miniCardWrapper = document.createElement('div')
 	miniCardWrapper.className = 'basket__mini-card'
 
@@ -30,42 +29,68 @@ function renderCart() {
 		const cartItem = document.createElement('div')
 		cartItem.className = 'mini-card'
 
-		cartItem.innerHTML = `
-            <div class="mini-card__picture">
-                <img src="${item.thumbnail}" alt="${item.title}" />
-            </div>
-            <div class="product-info">
-                <div class="mini-card__title">${item.title}</div>
-                <div class="mini-card__price">$${item.price} x ${item.quantity}</div>
-            </div>
-            <div class="delete">
-                <img src="/Vector.svg" alt="Удалить" data-id="${item.id}" class="delete-cart" />
-            </div>
-        `
+		// Создаем структуру мини-карточки
+		const miniCardPicture = document.createElement('div')
+		miniCardPicture.className = 'mini-card__picture'
+		const img = document.createElement('img')
+		img.src = item.thumbnail
+		img.alt = item.title
+		miniCardPicture.appendChild(img)
 
-		cartItem.querySelector('.delete-cart').addEventListener('click', () => {
+		const productInfo = document.createElement('div')
+		productInfo.className = 'product-info'
+		const miniCardTitle = document.createElement('div')
+		miniCardTitle.className = 'mini-card__title'
+		miniCardTitle.textContent = item.title
+		const miniCardPrice = document.createElement('div')
+		miniCardPrice.className = 'mini-card__price'
+		miniCardPrice.textContent = `$${item.price} x ${item.quantity}`
+		productInfo.appendChild(miniCardTitle)
+		productInfo.appendChild(miniCardPrice)
+
+		const deleteWrapper = document.createElement('div')
+		deleteWrapper.className = 'delete'
+		const deleteImg = document.createElement('img')
+		deleteImg.src = '/Vector.svg'
+		deleteImg.alt = 'Удалить'
+		deleteImg.addEventListener('click', () => {
 			removeFromCart(item.id)
 		})
+		deleteWrapper.appendChild(deleteImg)
+
+		cartItem.appendChild(miniCardPicture)
+		cartItem.appendChild(productInfo)
+		cartItem.appendChild(deleteWrapper)
 
 		miniCardWrapper.appendChild(cartItem)
 	})
 
 	cartRoot.appendChild(miniCardWrapper)
 
+	// Общая стоимость
 	const totalPrice = cart.reduce(
 		(sum, item) => sum + item.price * item.quantity,
 		0
 	)
 	const totalDiv = document.createElement('div')
 	totalDiv.className = 'total'
-	totalDiv.innerHTML = `
-        <div class="total__price">Total: $${totalPrice.toFixed(2)}</div>
-        <div class="total_btn"><button id="checkout-btn">CHECKOUT</button></div>
-    `
-	cartRoot.appendChild(totalDiv)
 
-	const checkoutBtn = document.getElementById('checkout-btn')
+	const totalPriceDiv = document.createElement('div')
+	totalPriceDiv.className = 'total__price'
+	totalPriceDiv.textContent = `Total: $${totalPrice.toFixed(2)}`
+
+	const checkoutBtnWrapper = document.createElement('div')
+	checkoutBtnWrapper.className = 'total_btn'
+	const checkoutBtn = document.createElement('button')
+	checkoutBtn.id = 'checkout-btn'
+	checkoutBtn.textContent = 'CHECKOUT'
 	checkoutBtn.addEventListener('click', clearCart)
+
+	checkoutBtnWrapper.appendChild(checkoutBtn)
+	totalDiv.appendChild(totalPriceDiv)
+	totalDiv.appendChild(checkoutBtnWrapper)
+
+	cartRoot.appendChild(totalDiv)
 }
 
 function clearCart() {
@@ -80,10 +105,8 @@ function removeFromCart(id) {
 	renderCart()
 }
 
-// Слушаем кастомное событие для добавления товара в корзину
 window.addEventListener('addToCart', event => {
 	addToCart(event.detail.product)
 })
 
-// Рендерим корзину при загрузке страницы
 renderCart()

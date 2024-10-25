@@ -48,6 +48,20 @@ function handleFilterChange(filterType, value) {
 			? selectedFilters.brands.delete(value)
 			: selectedFilters.brands.add(value)
 	}
+
+	const filterItems = document.querySelectorAll(`.filter-label`)
+	filterItems.forEach(label => {
+		const labelValue = label.textContent
+		const isSelected =
+			(filterType === 'tags' && selectedFilters.tags.has(labelValue)) ||
+			(filterType === 'brands' && selectedFilters.brands.has(labelValue))
+		if (isSelected) {
+			label.classList.add('active-filter')
+		} else {
+			label.classList.remove('active-filter')
+		}
+	})
+
 	filterProducts()
 }
 
@@ -75,8 +89,22 @@ export function updateFilterOptions(newProducts) {
 	const uniqueBrands = new Set()
 
 	allProducts.forEach(product => {
-		product.tags.forEach(tag => uniqueTags.add(tag))
-		uniqueBrands.add(product.brand)
+		if (Array.isArray(product.tags)) {
+			product.tags.forEach(tag => {
+				if (tag && typeof tag === 'string' && tag.trim() !== '') {
+					// Проверяем, что тег не пустой
+					uniqueTags.add(tag.trim())
+				}
+			})
+		}
+
+		if (
+			product.brand &&
+			typeof product.brand === 'string' &&
+			product.brand.trim() !== ''
+		) {
+			uniqueBrands.add(product.brand.trim())
+		}
 	})
 
 	filtersRoot.innerHTML = ''

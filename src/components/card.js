@@ -3,24 +3,47 @@ export function createProductCard(product, onAddToCart) {
 	productCard.className = 'card'
 	productCard.setAttribute('data-id', product.id)
 
-	productCard.innerHTML = `
-    <div class="card__image">
-      <img src="${product.thumbnail}" alt="${product.title}" />
-    </div>
-    <div class="card__title">${product.title}</div>
-    <div class="card__description">${product.description}</div>
-    <div class="card__buy">
-      <div class="price">$${product.price}</div>
-      <div class="price-btn">
-        <img src="/Button.svg" alt="Добавить в корзину" data-id="${product.id}" class="add-to-cart" />
-      </div>
-    </div>
-  `
+	const cardImage = document.createElement('div')
+	cardImage.className = 'card__image'
+	const image = document.createElement('img')
+	image.src = product.thumbnail
+	image.alt = product.title
+	cardImage.appendChild(image)
 
-	const addToCartButton = productCard.querySelector('.add-to-cart')
-	if (addToCartButton) {
-		addToCartButton.addEventListener('click', () => onAddToCart(product))
-	}
+	const cardTitle = document.createElement('div')
+	cardTitle.className = 'card__title'
+	cardTitle.textContent = product.title
+
+	const cardDescription = document.createElement('div')
+	cardDescription.className = 'card__description'
+	cardDescription.textContent = product.description
+
+	const cardBuy = document.createElement('div')
+	cardBuy.className = 'card__buy'
+
+	const priceDiv = document.createElement('div')
+	priceDiv.className = 'price'
+	priceDiv.textContent = `$${product.price}`
+
+	const priceBtn = document.createElement('div')
+	priceBtn.className = 'price-btn'
+
+	const addToCartButton = document.createElement('img')
+	addToCartButton.src = '/Button.svg'
+	addToCartButton.alt = 'Добавить в корзину'
+	addToCartButton.className = 'add-to-cart'
+	addToCartButton.setAttribute('data-id', product.id)
+
+	addToCartButton.addEventListener('click', () => onAddToCart(product))
+
+	priceBtn.appendChild(addToCartButton)
+	cardBuy.appendChild(priceDiv)
+	cardBuy.appendChild(priceBtn)
+
+	productCard.appendChild(cardImage)
+	productCard.appendChild(cardTitle)
+	productCard.appendChild(cardDescription)
+	productCard.appendChild(cardBuy)
 
 	return productCard
 }
