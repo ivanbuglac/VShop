@@ -85,7 +85,7 @@ body {
 	transition: background-color 0.3s, color 0.3s;
 }
 
-.filter-label.active {
+.filter-label:active {
 	background-color: var(--black);
 	color: #fff;
 }
@@ -290,6 +290,7 @@ body {
 	position: absolute;
 	right: 20px;
 	top: 30px;
+	cursor: pointer;
 }
 
 .total {

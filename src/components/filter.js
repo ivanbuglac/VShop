@@ -1,9 +1,6 @@
-import { loadProducts } from './api.js'
-
 const filterModal = document.getElementById('filter-modal')
 const filterBtn = document.getElementById('filter-btn')
 const closeModal = document.getElementById('close-modal')
-
 const filtersRoot = document.getElementById('filters-root')
 
 let allProducts = []
@@ -12,18 +9,10 @@ let selectedFilters = {
 	brands: new Set(),
 }
 
-filterBtn.addEventListener('click', () => {
-	filterModal.style.display = 'block'
-})
-
-closeModal.addEventListener('click', () => {
-	filterModal.style.display = 'none'
-})
-
+filterBtn.addEventListener('click', () => (filterModal.style.display = 'block'))
+closeModal.addEventListener('click', () => (filterModal.style.display = 'none'))
 window.addEventListener('click', event => {
-	if (event.target === filterModal) {
-		filterModal.style.display = 'none'
-	}
+	if (event.target === filterModal) filterModal.style.display = 'none'
 })
 
 function createFilterGroup(title, items, filterType) {
@@ -38,11 +27,10 @@ function createFilterGroup(title, items, filterType) {
 		const filterItem = document.createElement('div')
 		filterItem.className = 'filter-item'
 
-		const label = document.createElement('span') //  span для метки
+		const label = document.createElement('span')
 		label.textContent = item
-		label.className = 'filter-label' // Добавляем класс для метки
+		label.className = 'filter-label'
 		label.addEventListener('click', () => handleFilterChange(filterType, item))
-
 		filterItem.appendChild(label)
 		filterGroup.appendChild(filterItem)
 	})
@@ -52,37 +40,15 @@ function createFilterGroup(title, items, filterType) {
 
 function handleFilterChange(filterType, value) {
 	if (filterType === 'tags') {
-		if (selectedFilters.tags.has(value)) {
-			selectedFilters.tags.delete(value)
-		} else {
-			selectedFilters.tags.add(value)
-		}
+		selectedFilters.tags.has(value)
+			? selectedFilters.tags.delete(value)
+			: selectedFilters.tags.add(value)
 	} else if (filterType === 'brands') {
-		if (selectedFilters.brands.has(value)) {
-			selectedFilters.brands.delete(value)
-		} else {
-			selectedFilters.brands.add(value)
-		}
+		selectedFilters.brands.has(value)
+			? selectedFilters.brands.delete(value)
+			: selectedFilters.brands.add(value)
 	}
-
-	updateFilterLabels(filterType, value)
-
 	filterProducts()
-}
-
-function updateFilterLabels(filterType, value) {
-	const labels = document.querySelectorAll(`.filter-label`)
-	labels.forEach(label => {
-		if (label.textContent === value) {
-			if (filterType === 'tags' && selectedFilters.tags.has(value)) {
-				label.classList.add('active')
-			} else if (filterType === 'brands' && selectedFilters.brands.has(value)) {
-				label.classList.add('active')
-			} else {
-				label.classList.remove('active')
-			}
-		}
-	})
 }
 
 function filterProducts() {
@@ -93,7 +59,6 @@ function filterProducts() {
 		const matchesBrand =
 			selectedFilters.brands.size === 0 ||
 			selectedFilters.brands.has(product.brand)
-
 		return matchesTags && matchesBrand
 	})
 
@@ -103,29 +68,20 @@ function filterProducts() {
 	window.dispatchEvent(filterEvent)
 }
 
-async function initializeFilters() {
-	const { products } = await loadProducts(0, 194) // Загружаем все товары
-
-	allProducts = products // Сохраняем все товары
+export function updateFilterOptions(newProducts) {
+	allProducts.push(...newProducts)
 
 	const uniqueTags = new Set()
 	const uniqueBrands = new Set()
 
-	products.forEach(product => {
+	allProducts.forEach(product => {
 		product.tags.forEach(tag => uniqueTags.add(tag))
 		uniqueBrands.add(product.brand)
 	})
 
 	filtersRoot.innerHTML = ''
-	const tagsFilterGroup = createFilterGroup('Tags', [...uniqueTags], 'tags')
-	const brandsFilterGroup = createFilterGroup(
-		'Brands',
-		[...uniqueBrands],
-		'brands'
+	filtersRoot.appendChild(createFilterGroup('Tags', [...uniqueTags], 'tags'))
+	filtersRoot.appendChild(
+		createFilterGroup('Brands', [...uniqueBrands], 'brands')
 	)
-
-	filtersRoot.appendChild(tagsFilterGroup)
-	filtersRoot.appendChild(brandsFilterGroup)
 }
-
-initializeFilters()
