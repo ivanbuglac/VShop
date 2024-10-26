@@ -9,23 +9,27 @@ let currentOffset = INITIAL_OFFSET
 let totalProducts = 0
 let loadMoreBtn = null
 
-async function renderCatalogPart() {
-	const { products: productsSubset, total } = await loadProducts(
-		currentOffset,
-		PRODUCTS_PER_PAGE
-	)
-
-	if (totalProducts === 0) {
+async function renderCatalogPart(productsSubset = null) {
+	let productsToRender
+	if (productsSubset) {
+		productsToRender = productsSubset
+	} else {
+		const { products, total } = await loadProducts(
+			currentOffset,
+			PRODUCTS_PER_PAGE
+		)
+		productsToRender = products
 		totalProducts = total
 	}
 
-	productsSubset.forEach(product => {
+	productsToRender.forEach(product => {
 		const productCard = createProductCard(product, handleAddToCart)
 		catalogRoot.appendChild(productCard)
 	})
 
-	updateFilterOptions(productsSubset)
-
+	if (!productsSubset) {
+		updateFilterOptions(productsToRender)
+	}
 	checkShowMoreButton()
 }
 
@@ -46,12 +50,10 @@ function checkShowMoreButton() {
 
 function loadMoreProducts() {
 	currentOffset += PRODUCTS_PER_PAGE
-
 	if (loadMoreBtn) {
 		loadMoreBtn.remove()
 		loadMoreBtn = null
 	}
-
 	renderCatalogPart()
 }
 
@@ -64,8 +66,9 @@ function handleAddToCart(product) {
 
 window.addEventListener('filteredProducts', event => {
 	const filteredProducts = event.detail.filteredProducts
-
 	catalogRoot.innerHTML = ''
+	currentOffset = INITIAL_OFFSET
+
 	filteredProducts.forEach(product => {
 		const productCard = createProductCard(product, handleAddToCart)
 		catalogRoot.appendChild(productCard)
@@ -77,6 +80,14 @@ window.addEventListener('filteredProducts', event => {
 		loadMoreBtn.remove()
 		loadMoreBtn = null
 	}
+})
+
+window.addEventListener('resetFilters', () => {
+	catalogRoot.innerHTML = ''
+	currentOffset = INITIAL_OFFSET
+	totalProducts = 0
+	initializeCatalog()
+	checkShowMoreButton()
 })
 
 async function initializeCatalog() {

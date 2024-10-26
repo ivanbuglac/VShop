@@ -52,7 +52,6 @@ function createFilterGroup(title, items, filterType) {
 	return filterGroup
 }
 
-// Обработчик для изменения фильтров
 function handleFilterChange(filterType, value) {
 	if (filterType === 'tags') {
 		selectedFilters.tags.has(value)
@@ -64,25 +63,22 @@ function handleFilterChange(filterType, value) {
 			: selectedFilters.brands.add(value)
 	}
 
-	// Применение/удаление класса active-filter на выбранных фильтрах
-	const filterItems = document.querySelectorAll(`.filter-label`)
+	const filterItems = document.querySelectorAll('.filter-label')
 	filterItems.forEach(label => {
 		const labelValue = label.textContent
 		const isSelected =
 			(filterType === 'tags' && selectedFilters.tags.has(labelValue)) ||
 			(filterType === 'brands' && selectedFilters.brands.has(labelValue))
 		if (isSelected) {
-			label.classList.add('active-filter')
+			label.classList.add(ACTIVE_FILTER_CLASS)
 		} else {
-			label.classList.remove('active-filter')
+			label.classList.remove(ACTIVE_FILTER_CLASS)
 		}
 	})
 
-	// Применяем фильтры
 	filterProducts()
 }
 
-// Фильтрация товаров
 function filterProducts() {
 	const filteredProducts = allProducts.filter(product => {
 		const matchesTags =
@@ -100,7 +96,6 @@ function filterProducts() {
 	window.dispatchEvent(filterEvent)
 }
 
-// Функция для обновления вариантов фильтров
 export function updateFilterOptions(newProducts) {
 	allProducts.push(...newProducts)
 
@@ -108,30 +103,43 @@ export function updateFilterOptions(newProducts) {
 	const uniqueBrands = new Set()
 
 	allProducts.forEach(product => {
-		// Проверяем, что теги существуют и являются массивом
 		if (Array.isArray(product.tags)) {
 			product.tags.forEach(tag => {
 				if (tag && typeof tag === 'string' && tag.trim() !== '') {
-					// Проверяем, что тег не пустой
-					uniqueTags.add(tag.trim()) // Добавляем только непустые теги
+					uniqueTags.add(tag.trim())
 				}
 			})
 		}
 
-		// Проверяем, что бренд существует и является строкой
 		if (
 			product.brand &&
 			typeof product.brand === 'string' &&
 			product.brand.trim() !== ''
 		) {
-			uniqueBrands.add(product.brand.trim()) // Добавляем только непустые бренды
+			uniqueBrands.add(product.brand.trim())
 		}
 	})
 
-	// Очищаем контейнер и создаем новые фильтры
 	filtersRoot.innerHTML = ''
 	filtersRoot.appendChild(createFilterGroup('Tags', [...uniqueTags], 'tags'))
 	filtersRoot.appendChild(
 		createFilterGroup('Brands', [...uniqueBrands], 'brands')
 	)
+
+	const resetButton = document.createElement('button')
+	resetButton.textContent = 'Сбросить фильтры'
+	resetButton.className = 'btn__reset_filters'
+	resetButton.addEventListener('click', () => {
+		selectedFilters.tags.clear()
+		selectedFilters.brands.clear()
+
+		document.querySelectorAll(`.${ACTIVE_FILTER_CLASS}`).forEach(label => {
+			label.classList.remove(ACTIVE_FILTER_CLASS)
+		})
+
+		const resetEvent = new CustomEvent('resetFilters')
+		window.dispatchEvent(resetEvent)
+	})
+
+	filtersRoot.appendChild(resetButton)
 }
