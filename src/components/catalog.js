@@ -3,15 +3,16 @@ import { createProductCard } from './card.js'
 import { updateFilterOptions } from './filter.js'
 
 const catalogRoot = document.getElementById('catalog-root')
-let currentOffset = 0
-const productsToShow = 6
+const INITIAL_OFFSET = 0
+const PRODUCTS_PER_PAGE = 6
+let currentOffset = INITIAL_OFFSET
 let totalProducts = 0
 let loadMoreBtn = null
 
 async function renderCatalogPart() {
 	const { products: productsSubset, total } = await loadProducts(
 		currentOffset,
-		productsToShow
+		PRODUCTS_PER_PAGE
 	)
 
 	if (totalProducts === 0) {
@@ -29,7 +30,7 @@ async function renderCatalogPart() {
 }
 
 function checkShowMoreButton() {
-	if (currentOffset + productsToShow < totalProducts) {
+	if (currentOffset + PRODUCTS_PER_PAGE < totalProducts) {
 		if (!loadMoreBtn) {
 			loadMoreBtn = document.createElement('button')
 			loadMoreBtn.textContent = 'Show More'
@@ -44,7 +45,7 @@ function checkShowMoreButton() {
 }
 
 function loadMoreProducts() {
-	currentOffset += productsToShow
+	currentOffset += PRODUCTS_PER_PAGE
 
 	if (loadMoreBtn) {
 		loadMoreBtn.remove()
@@ -70,7 +71,7 @@ window.addEventListener('filteredProducts', event => {
 		catalogRoot.appendChild(productCard)
 	})
 
-	if (filteredProducts.length >= productsToShow) {
+	if (filteredProducts.length >= PRODUCTS_PER_PAGE) {
 		checkShowMoreButton()
 	} else if (loadMoreBtn) {
 		loadMoreBtn.remove()

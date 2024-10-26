@@ -1,3 +1,8 @@
+const EMPTY_CART_TEXT = 'Корзина пуста.'
+const CHECKOUT_TEXT = 'CHECKOUT'
+const TOTAL_TEXT = 'Total'
+const DELETE_ICON_PATH = '/Vector.svg'
+
 const cartRoot = document.getElementById('cart-root')
 let cart = JSON.parse(localStorage.getItem('cart')) || []
 
@@ -18,7 +23,7 @@ function renderCart() {
 	cartRoot.innerHTML = '<h2>Basket</h2>'
 
 	if (cart.length === 0) {
-		cartRoot.innerHTML += '<p>Корзина пуста.</p>'
+		cartRoot.innerHTML += `<p>${EMPTY_CART_TEXT}</p>`
 		return
 	}
 
@@ -29,7 +34,6 @@ function renderCart() {
 		const cartItem = document.createElement('div')
 		cartItem.className = 'mini-card'
 
-		// Создаем структуру мини-карточки
 		const miniCardPicture = document.createElement('div')
 		miniCardPicture.className = 'mini-card__picture'
 		const img = document.createElement('img')
@@ -51,7 +55,7 @@ function renderCart() {
 		const deleteWrapper = document.createElement('div')
 		deleteWrapper.className = 'delete'
 		const deleteImg = document.createElement('img')
-		deleteImg.src = '/Vector.svg'
+		deleteImg.src = DELETE_ICON_PATH
 		deleteImg.alt = 'Удалить'
 		deleteImg.addEventListener('click', () => {
 			removeFromCart(item.id)
@@ -67,7 +71,6 @@ function renderCart() {
 
 	cartRoot.appendChild(miniCardWrapper)
 
-	// Общая стоимость
 	const totalPrice = cart.reduce(
 		(sum, item) => sum + item.price * item.quantity,
 		0
@@ -77,13 +80,13 @@ function renderCart() {
 
 	const totalPriceDiv = document.createElement('div')
 	totalPriceDiv.className = 'total__price'
-	totalPriceDiv.textContent = `Total: $${totalPrice.toFixed(2)}`
+	totalPriceDiv.textContent = `${TOTAL_TEXT}: $${totalPrice.toFixed(2)}`
 
 	const checkoutBtnWrapper = document.createElement('div')
 	checkoutBtnWrapper.className = 'total_btn'
 	const checkoutBtn = document.createElement('button')
 	checkoutBtn.id = 'checkout-btn'
-	checkoutBtn.textContent = 'CHECKOUT'
+	checkoutBtn.textContent = CHECKOUT_TEXT
 	checkoutBtn.addEventListener('click', clearCart)
 
 	checkoutBtnWrapper.appendChild(checkoutBtn)
