@@ -29,9 +29,6 @@ body {
 	display: flex;
 }
 
-/* Модальное окно */
-/* Стили модального окна */
-/* Стили для модального окна */
 .modal {
 	display: none;
 	position: fixed;
@@ -44,6 +41,7 @@ body {
 }
 
 .modal-content {
+	margin: 20px;
 	max-width: 100%;
 	padding: 20px;
 	background-color: #fff;

@@ -53,6 +53,7 @@ function createFilterGroup(title, items, filterType) {
 }
 
 function handleFilterChange(filterType, value) {
+	// Изменяем состояние выбранного фильтра
 	if (filterType === 'tags') {
 		selectedFilters.tags.has(value)
 			? selectedFilters.tags.delete(value)
@@ -63,20 +64,30 @@ function handleFilterChange(filterType, value) {
 			: selectedFilters.brands.add(value)
 	}
 
-	const filterItems = document.querySelectorAll('.filter-label')
-	filterItems.forEach(label => {
-		const labelValue = label.textContent
-		const isSelected =
-			(filterType === 'tags' && selectedFilters.tags.has(labelValue)) ||
-			(filterType === 'brands' && selectedFilters.brands.has(labelValue))
-		if (isSelected) {
+	// Обновляем активные фильтры для тегов и брендов
+	updateFilterActiveStates()
+
+	// Применяем фильтры к товарам
+	filterProducts()
+}
+
+// Функция для обновления состояния активности фильтров
+function updateFilterActiveStates() {
+	// Пройдемся по всем фильтрам
+	filtersRoot.querySelectorAll(`.${FILTER_ITEM_CLASS}`).forEach(filterItem => {
+		const label = filterItem.querySelector(`.${FILTER_LABEL_CLASS}`)
+		const filterValue = label.textContent
+
+		const isTagActive = selectedFilters.tags.has(filterValue)
+		const isBrandActive = selectedFilters.brands.has(filterValue)
+
+		// Добавляем или удаляем класс активности в зависимости от состояния
+		if (isTagActive || isBrandActive) {
 			label.classList.add(ACTIVE_FILTER_CLASS)
 		} else {
 			label.classList.remove(ACTIVE_FILTER_CLASS)
 		}
 	})
-
-	filterProducts()
 }
 
 function filterProducts() {
