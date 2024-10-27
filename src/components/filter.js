@@ -1,3 +1,5 @@
+export let filteredCatalog = []
+
 const MODAL_SHOW_STYLE = 'block'
 const MODAL_HIDE_STYLE = 'none'
 
@@ -64,7 +66,6 @@ function handleFilterChange(filterType, value) {
 	}
 
 	updateFilterActiveStates()
-
 	filterProducts()
 }
 
@@ -94,6 +95,8 @@ function filterProducts() {
 			selectedFilters.brands.has(product.brand)
 		return matchesTags && matchesBrand
 	})
+
+	filteredCatalog = filteredProducts // Обновляем экспортированную переменную
 
 	const filterEvent = new CustomEvent('filteredProducts', {
 		detail: { filteredProducts },

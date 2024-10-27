@@ -1,6 +1,6 @@
 import { loadProducts } from './api.js'
 import { createProductCard } from './card.js'
-import { updateFilterOptions } from './filter.js'
+import { updateFilterOptions, filteredCatalog } from './filter.js'
 
 const catalogRoot = document.getElementById('catalog-root')
 const INITIAL_OFFSET = 0
@@ -80,6 +80,8 @@ window.addEventListener('filteredProducts', event => {
 		loadMoreBtn.remove()
 		loadMoreBtn = null
 	}
+
+	console.log('Отфильтрованные продукты:', filteredCatalog)
 })
 
 window.addEventListener('resetFilters', () => {
