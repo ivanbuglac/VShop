@@ -1,7 +1,7 @@
 const EMPTY_CART_TEXT = 'Корзина пуста.'
 const CHECKOUT_TEXT = 'CHECKOUT'
 const TOTAL_TEXT = 'Total'
-const DELETE_ICON_PATH = './Vector.svg'
+const DELETE_ICON_PATH = './public/Vector.svg'
 
 const cartRoot = document.getElementById('cart-root')
 let cart = JSON.parse(localStorage.getItem('cart')) || []

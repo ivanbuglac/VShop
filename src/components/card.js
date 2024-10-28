@@ -29,7 +29,7 @@ export function createProductCard(product, onAddToCart) {
 	priceBtn.className = 'price-btn'
 
 	const addToCartButton = document.createElement('img')
-	addToCartButton.src = './Button.svg'
+	addToCartButton.src = './public/Button.svg'
 	addToCartButton.alt = 'Добавить в корзину'
 	addToCartButton.className = 'add-to-cart'
 	addToCartButton.setAttribute('data-id', product.id)
