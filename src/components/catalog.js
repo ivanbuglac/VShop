@@ -74,13 +74,6 @@ window.addEventListener('filteredProducts', event => {
 		catalogRoot.appendChild(productCard)
 	})
 
-	if (filteredProducts.length >= PRODUCTS_PER_PAGE) {
-		checkShowMoreButton()
-	} else if (loadMoreBtn) {
-		loadMoreBtn.remove()
-		loadMoreBtn = null
-	}
-
 	console.log('Отфильтрованные продукты:', filteredCatalog)
 })
 
